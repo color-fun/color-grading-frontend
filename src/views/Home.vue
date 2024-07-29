@@ -112,6 +112,7 @@
                 :file-list="imageUpload.fileList"
                 list-type="picture-card"
                 multiple
+                accept="image/jpeg,image/png,image/jpg"
                 action="#">
                 <i slot="default" class="el-icon-plus" />
                 <div slot="file" slot-scope="{file}">
