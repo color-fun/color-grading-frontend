@@ -205,7 +205,7 @@ export default {
       handler(val) {
         const oldData = this.currentData
         this.currentData = this.imageProcessData[val - 1]
-        if (!this.currentData.originImage.file) {
+        if (oldData.originImage.file) {
           for (const key in oldData.originImage) {
             this.currentData.originImage[key] = oldData.originImage[key]
           }
