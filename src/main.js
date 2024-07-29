@@ -9,7 +9,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.prototype.$axios = axios
-Vue.prototype.$fileUrl = process.env.NODE_ENV !== 'production' ? 'http://localhost:8081' : 'files/'
+Vue.prototype.$fileUrl = process.env.NODE_ENV !== 'production' ? 'http://localhost:8081/files/' : 'files/'
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 

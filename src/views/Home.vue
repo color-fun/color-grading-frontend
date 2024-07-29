@@ -31,7 +31,7 @@
               size="small" />
           </el-form-item>
         </el-form>
-        <el-button type="primary" @click="requestImageProcess(currentData)">处理图片</el-button>
+        <el-button :disabled="loading" type="primary" @click="requestImageProcess(currentData)">处理图片</el-button>
         <el-button type="primary" @click="openImageListDialog('download')">下载处理结果</el-button>
       </div>
       <!-- 原图 -->
@@ -48,9 +48,16 @@
       <!-- 处理结果 -->
       <div class="result-image">
         <h3> 处理结果 </h3>
-        <template v-if="currentData.results.length > 0">
-          <img :src="currentData.results[currentData.resultIndex].file.url" alt="处理结果" >
-        </template>
+        <div
+          v-loading="loading"
+          element-loading-text="图片处理中"
+          element-loading-spinner="el-icon-loading"
+          element-loading-background="rgba(0, 0, 0, 0.2)"
+          style="min-height: 70%">
+          <template v-if="currentData.results.length > 0">
+            <img :src="currentData.results[currentData.resultIndex].file.url" alt="处理结果" >
+          </template>
+        </div>
       </div>
       <!-- 处理结果列表 -->
       <div v-if="currentData.results.length > 0" class="result-list">
@@ -188,6 +195,7 @@ export default {
         show: false,
         url: ''
       },
+      loading: false,
       resultMaps: [{}, {}, {}] // url -> results
     }
   },
@@ -358,6 +366,7 @@ export default {
         this.$message.error('请选择图片')
         return
       }
+      this.loading = true
       this.requestUploadImage(data.originImage).then(() => {
         const params = new URLSearchParams({
           file_path: data.originImage.path
@@ -392,7 +401,11 @@ export default {
           this.imageList[parseInt(this.activeIndex)].list.push(result)
         }).catch(err => {
           this.$message.error(err)
+        }).finally(() => {
+          this.loading = false
         })
+      }).catch(() => {
+        this.loading = false
       })
     },
 
